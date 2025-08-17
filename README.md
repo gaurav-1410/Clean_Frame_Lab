@@ -38,7 +38,7 @@
 ✅ Preview dataset in a clean UI  
 
 #### Future Implementation (In Progress)
-🔄 Data cleaning – handle missing values, duplicates, outliers
+🔄 Data cleaning – handle missing values, duplicates, outliers  
 📊 Exploratory Data Analysis (EDA) – interactive insights
 📄 PDF Processing (Multimodal AI) – Text & Image extraction
 💾 Save the cleaned dataset for further modeling
