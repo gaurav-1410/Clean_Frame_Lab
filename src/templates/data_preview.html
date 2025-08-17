@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dataset Preview - CleanFrameLab</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        pre {
+            background: #212529;
+            color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .table-container {
+            border-radius: 6px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-4">
+
+    <h2 class="text-center text-primary">📊 Dataset Preview</h2>
+
+    <div class="alert alert-info text-center">
+        <strong>Dimensions of the Dataset:</strong> {{ rows }} Rows × {{ cols }} Columns
+    </div>
+
+    <div class="section-title">🕳 Null Values</div>
+    <pre>{{ null_val }}</pre>
+
+    <div class="section-title">🔍 First 5 Rows</div>
+    <div class="table table-container table-responsive">
+        {{ head | safe }}
+    </div>
+
+    <div class="section-title">ℹ️ Info</div>
+    <pre>{{ infom }}</pre>
+
+    <div class="section-title">📑 Duplicate Rows</div>
+    <pre>{{ duplicate }}</pre>
+
+    <div class="section-title">🔢 Numerical Columns Summary</div>
+    <div class="table table-container table-responsive">
+        {{ num_describe | safe }}
+    </div>
+
+    <div class="section-title">🔡 Categorical Columns Summary</div>
+    <div class="table   table-container table-responsive">
+        {{ cat_describe | safe }}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-primary btn-lg">⬅ Upload Another File</a>
+    </div>
+
+</div>
+</body>
+</html>
