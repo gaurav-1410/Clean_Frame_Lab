@@ -1,20 +1,5 @@
 <h1 align="center">🧹 CLean Frame Lab: Data Preprocessing & Cleaning Tool 🚀</h1>
 
-<!-- <div align="center">
-    <a href="https://github.com/gaurav-1410/data-cleaning-tool">
-        <img src="https://img.shields.io/github/stars/gaurav-1410/data-cleaning-tool?style=for-the-badge" alt="Stars"/>
-    </a>
-    <a href="https://github.com/gaurav-1410/data-cleaning-tool/network/members">
-        <img src="https://img.shields.io/github/forks/gaurav-1410/data-cleaning-tool?style=for-the-badge" alt="Forks"/>
-    </a>
-    <a href="https://github.com/gaurav-1410/data-cleaning-tool/issues">
-        <img src="https://img.shields.io/github/issues/gaurav-1410/data-cleaning-tool?style=for-the-badge" alt="Issues"/>
-    </a>
-    <a href="https://github.com/gaurav-1410/data-cleaning-tool/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/gaurav-1410/data-cleaning-tool?style=for-the-badge" alt="License"/>
-    </a>
-</div> -->
-
 <div align="center">
     <i>
         A lightweight web-based tool to upload, preview, clean, and analyze datasets before using them for modeling.  
