@@ -1,25 +1,8 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    {% for plot_html in plot_htmls %}
-        <div>{{ plot_html | safe }}</div>
-        <hr>
-    {% endfor %}
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pre-Processing Charts</title>
+    <title>Pre-Processing</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body { background-color: #f8f9fa; }
@@ -36,15 +19,19 @@
 </head>
 <body>
     {% include 'navbar.html' %}
+    {% include 'dropdown_col.html' %}
 <div class="container my-4">
-    <h2 class="text-center text-primary mb-4">📊 Pre-Processing Charts</h2>
+    <h2 class="text-center text-primary mb-4">📊 Pre-Processing</h2>
     
     <div class="charts-wrapper">
-        {% for plot_html in plot_htmls %}
+        {% if plot_html %}
             <div class="chart-container">
+                <div class="chart-title">Feature: {{ selected_col }}</div>
                 {{ plot_html | safe }}
             </div>
-        {% endfor %}
+        {% else %}
+            <p class="text-muted text-center">👉 Select a feature from the dropdown above to see its visualization.</p>
+        {% endif %}
     </div>
     
     <div class="text-center mt-4">

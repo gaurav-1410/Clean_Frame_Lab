@@ -1,5 +1,5 @@
 from data_preview import df
-from flask import render_template, Blueprint, current_app
+from flask import render_template, Blueprint, current_app, request
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
@@ -15,30 +15,24 @@ def plot_features_route():
     cat_vars = df.select_dtypes(include=['object']).columns.tolist()
     num_vars = df.select_dtypes(include=['float', 'int']).columns.tolist()
 
-    plot_htmls = []
+    selected_col = request.args.get("col")
+    plot_html = None
 
-    for col in cat_vars:
-        count_df = df[col].value_counts().reset_index()
-        count_df.columns = [col, 'Count']
-        fig = px.bar(
-            count_df,
-            x=col, y="Count",
-            title=f"Categorical Distribution: {col}",
-            labels={col: col, "Count": "Count"}
-        )
-        plot_html = pio.to_html(fig, full_html=False)
-        plot_htmls.append(plot_html)
+    if selected_col:
+        if selected_col in cat_vars:
+            count_df = df[selected_col].value_counts().reset_index()
+            count_df.columns = [selected_col, 'Count']
+            fig = px.bar(count_df, x=selected_col, y="Count",
+                         title=f"Categorical Distribution: {selected_col}")
+            plot_html = pio.to_html(fig, full_html=False)
 
-    for col in num_vars:
-        fig = px.histogram(
-            df, x=col,
-            nbins=30,
-            title=f"Numerical Distribution: {col}",
-            labels={col: col}
-        )
-        plot_html = pio.to_html(fig, full_html=False)
-        plot_htmls.append(plot_html)
+        elif selected_col in num_vars:
+            fig = px.histogram(df, x=selected_col, nbins=30,
+                               title=f"Numerical Distribution: {selected_col}")
+            plot_html = pio.to_html(fig, full_html=False)
 
-    return render_template('pre_processing.html', 
-                           plot_htmls = plot_htmls
-                        )
+    return render_template("pre_processing.html",
+                           cat_vars=cat_vars,
+                           num_vars=num_vars,
+                           plot_html=plot_html,
+                           selected_col=selected_col)
