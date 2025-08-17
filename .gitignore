@@ -48,3 +48,6 @@ __pypackages__/
 
 # Windows thumbnail cache files
 Thumbs.db
+
+# Data Folder (During development used for testing)
+data
