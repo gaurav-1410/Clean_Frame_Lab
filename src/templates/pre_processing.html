@@ -19,24 +19,145 @@
 </head>
 <body>
     {% include 'navbar.html' %}
-    {% include 'dropdown_col.html' %}
+
 <div class="container my-4">
     <h2 class="text-center text-primary mb-4">📊 Pre-Processing</h2>
-    
+
+    <form method="get" action="{{ url_for('plot_features.plot_features_route') }}" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label class="form-label">Categorical Column</label>
+            <select class="form-select" name="col" id="cat_col">
+                <option value="">-- Select --</option>
+                {% for col in columns %}
+                    <option value="{{ col }}" {% if selected_col == col %}selected{% endif %}>{{ col }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Numerical Column</label>
+            <select class="form-select" name="col2" id="num_col">
+                <option value="">-- Select --</option>
+                {% for col in columns %}
+                    <option value="{{ col }}" {% if selected_col2 == col %}selected{% endif %}>{{ col }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Graph Type</label>
+            <select class="form-select" name="graph_type" id="graph_type">
+                <option value="">-- Select --</option>
+            </select>
+        </div>
+
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Generate Graph</button>
+        </div>
+    </form>
+
     <div class="charts-wrapper">
         {% if plot_html %}
             <div class="chart-container">
-                <div class="chart-title">Feature: {{ selected_col }}</div>
+                <div class="chart-title">
+                    Feature(s): 
+                    {% if selected_col %} {{ selected_col }} {% endif %}
+                    {% if selected_col2 %} vs {{ selected_col2 }} {% endif %}
+                </div>
                 {{ plot_html | safe }}
             </div>
         {% else %}
-            <p class="text-muted text-center">👉 Select a feature from the dropdown above to see its visualization.</p>
+            <p class="text-muted text-center">👉 Select columns and a graph type to see its visualization.</p>
         {% endif %}
     </div>
-    
+
     <div class="text-center mt-4">
         <a href="{{ url_for('upload.upload') }}" class="btn btn-secondary btn-lg">⬅ Back</a>
     </div>
 </div>
+
+<script>
+    const graphTypeSelect = document.getElementById("graph_type");
+    const col1 = document.getElementById("cat_col");   // dropdown 1
+    const col2 = document.getElementById("num_col");   // dropdown 2
+
+    // from Flask backend
+    const cat_vars = {{ cat_vars | tojson }};
+    const num_vars = {{ num_vars | tojson }};
+
+    function getColType(colName) {
+        if (!colName) return null;
+        if (cat_vars.includes(colName)) return "cat";
+        if (num_vars.includes(colName)) return "num";
+        return null;
+    }
+
+    function updateGraphOptions() {
+        graphTypeSelect.innerHTML = '<option value="">-- Select --</option>';
+        let firstOption = null;
+
+        const col1Type = getColType(col1.value);
+        const col2Type = getColType(col2.value);
+
+        if (col1Type && !col2Type) {
+            if (col1Type === "cat") {
+                const options = { bar: "Bar Plot", pie: "Pie Chart", mosaic: "Mosaic Plot" };
+                for (const [val, text] of Object.entries(options)) {
+                    graphTypeSelect.innerHTML += `<option value="${val}">${text}</option>`;
+                    if (!firstOption) firstOption = val;
+                }
+            } else if (col1Type === "num") {
+                const options = { hist: "Histogram", box: "Box Plot", scatter: "Scatter Plot" };
+                for (const [val, text] of Object.entries(options)) {
+                    graphTypeSelect.innerHTML += `<option value="${val}">${text}</option>`;
+                    if (!firstOption) firstOption = val;
+                }
+            }
+        }
+
+        else if (!col1Type && col2Type) {
+            if (col2Type === "cat") {
+                const options = { bar: "Bar Plot", pie: "Pie Chart", mosaic: "Mosaic Plot" };
+                for (const [val, text] of Object.entries(options)) {
+                    graphTypeSelect.innerHTML += `<option value="${val}">${text}</option>`;
+                    if (!firstOption) firstOption = val;
+                }
+            } else if (col2Type === "num") {
+                const options = { hist: "Histogram", box: "Box Plot", scatter: "Scatter Plot" };
+                for (const [val, text] of Object.entries(options)) {
+                    graphTypeSelect.innerHTML += `<option value="${val}">${text}</option>`;
+                    if (!firstOption) firstOption = val;
+                }
+            }
+        }
+
+        else if (col1Type && col2Type) {
+            if ((col1Type === "cat" && col2Type === "num") || (col1Type === "num" && col2Type === "cat")) {
+                const options = { cat_box: "Box Plot", violin: "Violin Plot", bar_error: "Bar Plot with Error Bars" };
+                for (const [val, text] of Object.entries(options)) {
+                    graphTypeSelect.innerHTML += `<option value="${val}">${text}</option>`;
+                    if (!firstOption) firstOption = val;
+                }
+            }
+            else if (col1Type === "num" && col2Type === "num") {
+                const options = { num_scatter: "Scatter Plot", num_line: "Line Plot", corr: "Correlation Heatmap" };
+                for (const [val, text] of Object.entries(options)) {
+                    graphTypeSelect.innerHTML += `<option value="${val}">${text}</option>`;
+                    if (!firstOption) firstOption = val;
+                }
+            }
+        }
+
+        if (firstOption) {
+            graphTypeSelect.value = firstOption;
+        }
+    }
+
+    col1.addEventListener("change", updateGraphOptions);
+    col2.addEventListener("change", updateGraphOptions);
+
+    updateGraphOptions();
+</script>
+
 </body>
 </html>

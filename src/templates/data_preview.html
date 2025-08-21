@@ -43,13 +43,13 @@
         <strong>Dimensions of the Dataset:</strong> {{ rows }} Rows × {{ cols }} Columns
     </div>
 
-    <div class="section-title">🕳 Null Values</div>
-    <pre>{{ null_val }}</pre>
-
     <div class="section-title">🔍 First 5 Rows</div>
     <div class="table table-container table-responsive">
         {{ head | safe }}
     </div>
+
+    <div class="section-title">🕳 Null Values</div>
+    <pre>{{ null_val }}</pre>
 
     <div class="section-title">ℹ️ Info</div>
     <pre>{{ infom }}</pre>
